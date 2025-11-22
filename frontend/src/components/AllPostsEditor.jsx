@@ -54,7 +54,7 @@ export default function AboutEditor() {
     const handleDelete = async (postId) => deletePost(postId, setPosts);
 
     return (
-        <div className="w-[40vw] ml-[20vw] mr-[20vw] flex flex-col gap-5 mt-[2.5vw] self-center border-1 p-5">
+        <div className="w-[90vw] md:w-[75vw] lg:w-[60vw] mx-auto flex flex-col gap-5 mt-[2.5vw] self-center border-1 p-5">
             {/* {status && <p className="text-sm text-gray-500 h-5">{status}</p>} */}  
             <div className="flex flex-row justify-between border-b">
                 <h3 className="text-2xl">Post Title</h3>
@@ -76,6 +76,7 @@ export default function AboutEditor() {
                             onChange={(e) =>
                                 handleVisibilityChange(post.id, e.target.checked)
                             }
+                            className="cursor-pointer"
                         />
                     </label>
                 </div>

@@ -39,9 +39,7 @@ export default function PostPage({ isAuthenticated = false, onEdit, onDelete }) 
                 )}
 
                 {post.media_type === "video" && post.media_href && (
-                    <div className="w-[80vw] h-[45vw] md:w-[70vw] md:h-[40vw] lg:w-[60vw] lg:h-[30vw] [&_*]:w-full [&_*]:h-full">
-                        <YoutubeVideo url={post.media_href} />
-                    </div>
+                    <YoutubeVideo url={post.media_href} parentStyling="w-[80vw] h-[45vw] md:w-[70vw] md:h-[40vw] lg:w-[60vw] lg:h-[30vw] [&_*]:w-full [&_*]:h-full"/>
                 )}
 
                 {post.media_type === "link" && post.media_href && (

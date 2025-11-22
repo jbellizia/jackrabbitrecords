@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import YouTube from "react-youtube";
 
-// --- Utility: Extract clean 11-char video ID ---
 function extractYouTubeId(url) {
     if (!url) return null;
 
@@ -12,61 +11,51 @@ function extractYouTubeId(url) {
     return match ? match[1] : null;
 }
 
-// --- Utility: Check if that ID is embeddable ---
-async function checkEmbeddable(videoId) {
-    if (!videoId) return false;
-    try {
-        const res = await fetch(`/api/check-youtube-embed?id=${videoId}`);
-        const data = await res.json();
-        return data.embeddable;
-    } catch (err) {
-        console.error("Error checking embed ability:", err);
-        return false;
-    }
-}
-
-export default function YoutubeVideo({ url }) {
+export default function YoutubeVideo({ url , parentStyling }) {
     const [videoId, setVideoId] = useState(null);
-    const [canEmbed, setCanEmbed] = useState(null); 
+    const [canEmbed, setCanEmbed] = useState(true);
 
     useEffect(() => {
         const id = extractYouTubeId(url);
         setVideoId(id);
-        if (id) {
-            checkEmbeddable(id).then(setCanEmbed);
-        } else {
-            setCanEmbed(false);
-        }
+        setCanEmbed(true); // Reset on URL change
     }, [url]);
 
     const options = {
         width: "100%",
         height: "100%",
-        playerVars: {
-            autoplay: 0,
-            controls: 1,
-        },
+        playerVars: { autoplay: 0, controls: 1 },
     };
 
-    if (!canEmbed || !videoId) {
+    function handleError(event) {
+        const errorCode = event.data;
+        console.warn("YouTube embed error:", errorCode);
+
+        if (errorCode === 101 || errorCode === 150) {
+            // Embedding disabled
+            setCanEmbed(false);
+        } else {
+            // Other errors also fallback
+            setCanEmbed(false);
+        }
+    }
+
+    // FALLBACK if cannot embed
+    if (!videoId || !canEmbed) {
         return (
-            <a
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="yt-fallback"
-            >
-                Watch on YouTube
+            <a href={url} target="_blank" rel="noopener noreferrer" className="underline hover:underline cursor-pointer text-gray-700 hover:text-gray-900">
+                        Watch on YouTube
             </a>
         );
     }
 
     return (
-        <YouTube
-            videoId={videoId}
-            opts={options}
-            onReady={(event) => event.target.pauseVideo()}
-            id="video"
-        />
+        <div className={parentStyling}>
+            <YouTube
+                videoId={videoId}
+                opts={options}
+                onError={handleError}
+            />
+        </div>
     );
 }

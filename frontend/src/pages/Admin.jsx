@@ -123,7 +123,7 @@ export default function Admin({setIsAuthenticated}) {
                 </button>
             </div>
             {tab === "post" ? (
-                <div className="w-[60vw] ml-[20vw] mr-[20vw] flex flex-col gap-5 mt-[2.5vw]">
+                <div className="w-[90vw] md:w-[75vw] lg:w-[60vw] mx-auto flex flex-col gap-5 mt-[2.5vw]">
 
                     <form
                         onSubmit={handleSubmit}

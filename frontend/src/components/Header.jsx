@@ -26,8 +26,9 @@ export default function Header() {
             </nav>
 
             {/* Title */}
-            <h1 className="font-heading text-2xl md:text-4xl lg:text-5xl">Jack Rabbit Records</h1>
-
+            <Link to="/">
+                <h1 className="font-heading text-2xl md:text-4xl lg:text-5xl">Jack Rabbit Records</h1>
+            </Link>
             {/* Desktop Nav */}
             <nav className="ml-auto mr-[2vw] hidden md:flex flex-row gap-4">
                 <Link to="/about">

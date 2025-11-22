@@ -7,7 +7,7 @@ export default function PostCard({ post, isAuthenticated = false, onEdit, onDele
         <section name="post-card" className="flex flex-col gap-4 w-[90vw] md:w-[66vw] p-[1vw] border cursor-default">
 
             <h2 className="text-3xl ">{post.title}</h2>
-            <p>{post.blurb}</p>
+            <p className ={`${post.blurb === '' ? "hidden" : ""}`}>{post.blurb}</p>
 
             <div name="post-media" className={`${post.media_type === 'video' || post.media_type === 'image' ? "self-center " : ""} ${post.media_type === 'none' ? "hidden" : ""}`}>
                 {post.media_type === "image" && post.media_href && (
@@ -18,9 +18,7 @@ export default function PostCard({ post, isAuthenticated = false, onEdit, onDele
                     />
                 )}
                 {post.media_type === "video" && post.media_href && (
-                    <div className="w-[65vw] h-[40vw] sm:w-[65vw] sm:h-[40vw] md:w-[55vw] md:h-[35vw] lg:w-[45vw] lg:h-[30vw] [&_*]:w-full [&_*]:h-full ">
-                        <YoutubeVideo url={post.media_href} />
-                    </div>
+                    <YoutubeVideo url={post.media_href} parentStyling="w-[65vw] h-[40vw] sm:w-[65vw] sm:h-[40vw] md:w-[55vw] md:h-[35vw] lg:w-[45vw] lg:h-[30vw] [&_*]:w-full [&_*]:h-full "/>
                 )}
                 {post.media_type === "link" && post.media_href && (
                     <a href={post.media_href} target="_blank" rel="noopener noreferrer" className="underline hover:underline cursor-pointer text-gray-700 hover:text-gray-900">

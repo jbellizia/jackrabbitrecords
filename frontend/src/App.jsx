@@ -13,6 +13,7 @@ import PublicRoute from "./components/PublicRoute";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import LoadingOverlay from "./components/LoadingOverlay";
+import SplashLandingPage from "./components/SplashLandingPage";
 
 
 function Layout() {
@@ -33,6 +34,7 @@ function Layout() {
 export default function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [showSplash, setShowSplash] = useState(false);
 
     useEffect(() => {
         const start = Date.now();
@@ -49,50 +51,70 @@ export default function App() {
             });
     }, []);
 
+    useEffect(() => {
+        const hasVisited = sessionStorage.getItem("hasVisited");
+        if (!hasVisited) {
+            setShowSplash(true);
+        }
+    }, []);
+
+    const handleEnter = () => {
+        sessionStorage.setItem("hasVisited", "true");
+        setShowSplash(false);
+    };
+
     if (loading) {
-        // Show full-screen loading overlay during initial auth check
         return <LoadingOverlay show={true} />;
     }
 
     return (
-        <Router>
-            <Routes>
-                <Route element={<Layout />}>
-                    <Route path="/" element={<Home isAuthenticated={isAuthenticated} />} />
-                    <Route path="/home" element={<Home isAuthenticated={isAuthenticated} />} />
-                    <Route path="/post/:id" element={<PostPage isAuthenticated={isAuthenticated} />} />
-                    <Route
-                        path="/about" element={<About isAuthenticated={isAuthenticated} />}
-                    />
-                    <Route
-                        path="/login"
-                        element={
-                            <PublicRoute isAuthenticated={isAuthenticated}>
-                                <Login setIsAuthenticated={setIsAuthenticated} />
-                            </PublicRoute>
-                        }
-                    />
+        <>
+            {showSplash ? (
+                <SplashLandingPage onEnter={handleEnter} />
+            ) : (
+                <Router>
+                    <Routes>
+                        <Route element={<Layout />}>
+                            <Route path="/" element={<Home isAuthenticated={isAuthenticated} />} />
+                            <Route path="/home" element={<Home isAuthenticated={isAuthenticated} />} />
+                            <Route path="/post/:id" element={<PostPage isAuthenticated={isAuthenticated} />} />
 
-                    <Route
-                        path="/admin"
-                        element={
-                            <ProtectedRoute isAuthenticated={isAuthenticated}>
-                                <Admin setIsAuthenticated={setIsAuthenticated} />
-                            </ProtectedRoute>
-                        }
-                    />
+                            <Route
+                                path="/about"
+                                element={<About isAuthenticated={isAuthenticated} />}
+                            />
 
-                    <Route
-                        path="/edit/:postId"
-                        element={
-                            <ProtectedRoute isAuthenticated={isAuthenticated}>
-                                <EditPost />
-                            </ProtectedRoute>
-                        }
-                    />
-                    
-                </Route>
-            </Routes>
-        </Router>
+                            <Route
+                                path="/login"
+                                element={
+                                    <PublicRoute isAuthenticated={isAuthenticated}>
+                                        <Login setIsAuthenticated={setIsAuthenticated} />
+                                    </PublicRoute>
+                                }
+                            />
+
+                            <Route
+                                path="/admin"
+                                element={
+                                    <ProtectedRoute isAuthenticated={isAuthenticated}>
+                                        <Admin setIsAuthenticated={setIsAuthenticated} />
+                                    </ProtectedRoute>
+                                }
+                            />
+
+                            <Route
+                                path="/edit/:postId"
+                                element={
+                                    <ProtectedRoute isAuthenticated={isAuthenticated}>
+                                        <EditPost />
+                                    </ProtectedRoute>
+                                }
+                            />
+                        </Route>
+                    </Routes>
+                </Router>
+            )}
+        </>
     );
+
 }

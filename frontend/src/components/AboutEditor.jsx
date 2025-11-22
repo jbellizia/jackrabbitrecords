@@ -35,7 +35,7 @@ export default function AboutEditor() {
     };
 
     return (
-        <div className="w-[60vw] ml-[20vw] mr-[20vw] flex flex-col gap-5 mt-[2.5vw]">
+        <div className="w-[90vw] md:w-[75vw] lg:w-[60vw] mx-auto flex flex-col gap-5 mt-[2.5vw]">
             <form onSubmit={handleSave} className="flex-col flex gap-5">
                 <p className="text-center text-sm text-gray-500">{status}</p>
                 <input
