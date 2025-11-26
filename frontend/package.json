@@ -6,7 +6,8 @@
   "scripts": {
     "dev:frontend": "vite",
     "dev:backend": "cd ../backend && flask run --host=0.0.0.0 --port=5050",
-    "dev": "concurrently -n FRONTEND,BACKEND -c green,blue \"npm run dev:frontend\" \"npm run dev:backend\""
+    "dev": "concurrently -n FRONTEND,BACKEND -c green,blue \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "build": "vite build"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.14",
